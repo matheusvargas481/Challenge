@@ -4,20 +4,20 @@ import com.matheusvargas481.challenge.dateanalysis.domain.Client;
 import com.matheusvargas481.challenge.dateanalysis.domain.Sale;
 import com.matheusvargas481.challenge.dateanalysis.domain.SaleItems;
 import com.matheusvargas481.challenge.dateanalysis.domain.Salesman;
-import org.springframework.stereotype.Component;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
+@Getter
 public class BuildProcessor {
     private static final String SEPARETOR = "ç";
     private static final String SEPARETOR_COMMA = ",";
     private static final String SEPARETOR_HYPHEN = "-";
-    public List<Client> clientList = new ArrayList();
-    public List<Salesman> salesmanList = new ArrayList();
-    public List<Sale> saleList = new ArrayList<>();
-    public List<SaleItems> saleItemsList = new ArrayList<>();
+    private List<Client> clientList = new ArrayList();
+    private List<Salesman> salesmanList = new ArrayList();
+    private List<Sale> saleList = new ArrayList<>();
+    private List<SaleItems> saleItemsList = new ArrayList<>();
 
     public Client client(String stringClient) {
         String[] arrayClient = stringClient.split(SEPARETOR);
