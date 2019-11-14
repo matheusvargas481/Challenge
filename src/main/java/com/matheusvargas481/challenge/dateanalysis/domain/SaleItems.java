@@ -14,5 +14,4 @@ public class SaleItems {
     private Long idItems;
     private int itemsQuantity;
     private double itemPrice;
-
 }

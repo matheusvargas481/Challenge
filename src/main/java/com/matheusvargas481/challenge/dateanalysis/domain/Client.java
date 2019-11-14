@@ -16,5 +16,4 @@ public class Client {
     private String bussinesArea;
 
     public static final String TYPE = "002";
-
 }
