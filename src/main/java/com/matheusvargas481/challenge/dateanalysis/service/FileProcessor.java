@@ -3,6 +3,8 @@ package com.matheusvargas481.challenge.dateanalysis.service;
 import com.matheusvargas481.challenge.dateanalysis.builder.BuildProcessor;
 import com.matheusvargas481.challenge.dateanalysis.domain.Client;
 import com.matheusvargas481.challenge.dateanalysis.domain.Sale;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -13,10 +15,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component
 public class FileProcessor {
+
+    @Autowired
     private BuildProcessor buildProcessor;
-    public void leitura() {
-        buildProcessor = new BuildProcessor();
+
+    public void readFile() {
         List<String> dados = new ArrayList<>();
         FileFilter filter = new FileFilter() {
             public boolean accept(File file) {

@@ -4,18 +4,20 @@ import com.matheusvargas481.challenge.dateanalysis.domain.Client;
 import com.matheusvargas481.challenge.dateanalysis.domain.Sale;
 import com.matheusvargas481.challenge.dateanalysis.domain.SaleItems;
 import com.matheusvargas481.challenge.dateanalysis.domain.Salesman;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class BuildProcessor {
     private static final String SEPARETOR = "ç";
     private static final String SEPARETOR_COMMA = ",";
     private static final String SEPARETOR_HYPHEN = "-";
-    private List<Client> clientList = new ArrayList();
-    private List<Salesman> salesmanList = new ArrayList();
-    private List<Sale> saleList = new ArrayList<>();
-    private List<SaleItems> saleItemsList = new ArrayList<>();
+    public List<Client> clientList = new ArrayList();
+    public List<Salesman> salesmanList = new ArrayList();
+    public List<Sale> saleList = new ArrayList<>();
+    public List<SaleItems> saleItemsList = new ArrayList<>();
 
     public Client client(String stringClient) {
         String[] arrayClient = stringClient.split(SEPARETOR);
@@ -41,7 +43,7 @@ public class BuildProcessor {
     }
 
     public List<SaleItems> saleItems(String stringSalesItems) {
-        double totalSale = 0;
+        //   double totalSale = 0;
         String items = stringSalesItems.replace("[", "").replace("]", "");
         String[] arrayItemsList = items.split(SEPARETOR_COMMA);
         for (String item : arrayItemsList) {
@@ -52,7 +54,7 @@ public class BuildProcessor {
                     .itemsQuantity(Integer.parseInt(arrayItens[1]))
                     .itemPrice(Double.parseDouble(arrayItens[2]))
                     .build();
-            totalSale = totalSale + Double.parseDouble(arrayItens[2]);
+            //  totalSale = totalSale + Double.parseDouble(arrayItens[2]);
             saleItemsList.add(saleItems);
         }
         return saleItemsList;
