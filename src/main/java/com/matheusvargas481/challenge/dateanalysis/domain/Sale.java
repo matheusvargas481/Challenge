@@ -18,11 +18,4 @@ public class Sale {
     private String salesmanName;
 
     public static final String TYPE = "003";
-
-//    private double valorTotalVenda = 0D;
-//    public Double totalCalculationSale() {
-//        valorTotalVenda = saleItemsList.stream().mapToDouble(iv -> iv.getItemsQuantity() * iv.getItemPrice()).sum();
-//        return valorTotalVenda;
-//    }
-
 }

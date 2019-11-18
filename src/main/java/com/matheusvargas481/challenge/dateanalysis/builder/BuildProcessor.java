@@ -8,43 +8,52 @@ import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 public class BuildProcessor {
-    private static final String SEPARETOR = "ç";
+
     private static final String SEPARETOR_COMMA = ",";
     private static final String SEPARETOR_HYPHEN = "-";
-    private List<Client> clientList = new ArrayList();
-    private List<Salesman> salesmanList = new ArrayList();
-    private List<Sale> saleList = new ArrayList<>();
-    private List<SaleItems> saleItemsList = new ArrayList<>();
 
-    public Client client(String stringClient) {
-        String[] arrayClient = stringClient.split(SEPARETOR);
+    public List<String[]> filterObjects(List<String[]> objects, String id){
+        return objects.stream()
+                .filter(object -> object[0].startsWith(id))
+                .collect(Collectors.toList());
+    }
+
+    public Client createClient(String[] lineClient) {
         Client client = Client.builder()
-                .cnpj(arrayClient[1])
-                .name(arrayClient[2])
-                .bussinesArea(arrayClient[3])
+                .cnpj(lineClient[1])
+                .name(lineClient[2])
+                .bussinesArea(lineClient[3])
                 .build();
-        clientList.add(client);
         return client;
     }
 
-    public Salesman salesman(String stringSalesman) {
-        String[] arraySalesman = stringSalesman.split(SEPARETOR);
+    public Salesman getSalesman(String[] lineSalesman) {
         Salesman salesman = Salesman
                 .builder()
-                .cpf(arraySalesman[1])
-                .name(arraySalesman[2])
-                .salary(Double.parseDouble(arraySalesman[3]))
+                .cpf(lineSalesman[1])
+                .name(lineSalesman[2])
+                .salary(Double.parseDouble(lineSalesman[3]))
                 .build();
-        salesmanList.add(salesman);
         return salesman;
     }
 
-    public List<SaleItems> saleItems(String stringSalesItems) {
-        //   double totalSale = 0;
-        String items = stringSalesItems.replace("[", "").replace("]", "");
+    public Sale getSale(String[] lineSale) {
+        Sale sale = Sale
+                .builder()
+                .id(Long.parseLong(lineSale[1]))
+                .saleItemsList(saleItems(lineSale[2]))
+                .salesmanName(lineSale[3])
+                .build();
+        return sale;
+    }
+
+    private List<SaleItems> saleItems(String lineSalesItems) {
+        List<SaleItems> saleItemsList = new ArrayList<>();
+        String items = lineSalesItems.replace("[", "").replace("]", "");
         String[] arrayItemsList = items.split(SEPARETOR_COMMA);
         for (String item : arrayItemsList) {
             String[] arrayItens = item.split(SEPARETOR_HYPHEN);
@@ -54,21 +63,8 @@ public class BuildProcessor {
                     .itemsQuantity(Integer.parseInt(arrayItens[1]))
                     .itemPrice(Double.parseDouble(arrayItens[2]))
                     .build();
-            //  totalSale = totalSale + Double.parseDouble(arrayItens[2]);
             saleItemsList.add(saleItems);
         }
         return saleItemsList;
-    }
-
-    public Sale sale(String stringSale) {
-        String[] arraySale = stringSale.split(SEPARETOR);
-        Sale sale = Sale
-                .builder()
-                .id(Long.parseLong(arraySale[1]))
-                .saleItemsList(saleItems(arraySale[2]))
-                .salesmanName(arraySale[3])
-                .build();
-        saleList.add(sale);
-        return sale;
     }
 }

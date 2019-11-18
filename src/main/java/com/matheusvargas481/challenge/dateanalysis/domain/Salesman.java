@@ -15,6 +15,6 @@ public class Salesman {
     private String cpf;
     private String name;
     private double salary;
-//    private Double totalSale = 0D;
+
     public static final String TYPE = "001";
 }
