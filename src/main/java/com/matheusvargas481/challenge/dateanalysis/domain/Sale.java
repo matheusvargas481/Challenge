@@ -18,4 +18,8 @@ public class Sale {
     private String salesmanName;
 
     public static final String TYPE = "003";
+
+    public double valueTotal() {
+        return saleItemsList.stream().mapToDouble(itemsSum -> itemsSum.getItemsQuantity() * itemsSum.getItemPrice()).sum();
+    }
 }

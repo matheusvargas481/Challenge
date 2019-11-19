@@ -4,6 +4,7 @@ import com.matheusvargas481.challenge.dateanalysis.domain.Client;
 import com.matheusvargas481.challenge.dateanalysis.domain.Sale;
 import com.matheusvargas481.challenge.dateanalysis.domain.Salesman;
 
+import java.util.Comparator;
 import java.util.List;
 
 public class ChallengeService {
@@ -17,19 +18,19 @@ public class ChallengeService {
         this.saleList = saleList;
     }
 
-    public void getAmountClient() {
-
+    public int getAmountClient() {
+        return clientList.size();
     }
 
-    public void getAmountSeller() {
-
+    public int getAmountSeller() {
+        return salesmanList.size();
     }
 
-    public void getExpensiveSale() {
-
+    public Long getExpensiveSale() {
+        return saleList.stream().max(Comparator.comparing(Sale::valueTotal)).map(Sale::getId).get();
     }
 
-    public void getWorsSeller() {
-
+    public String getWorsSeller() {
+        return salesmanList.stream().min(Comparator.comparing(Salesman::getValueTotalSale)).map(Salesman::getName).get();
     }
 }

@@ -16,7 +16,7 @@ public class BuildProcessor {
     private static final String SEPARETOR_COMMA = ",";
     private static final String SEPARETOR_HYPHEN = "-";
 
-    public List<String[]> filterObjects(List<String[]> objects, String id){
+    public List<String[]> filterObjects(List<String[]> objects, String id) {
         return objects.stream()
                 .filter(object -> object[0].startsWith(id))
                 .collect(Collectors.toList());
@@ -31,7 +31,7 @@ public class BuildProcessor {
         return client;
     }
 
-    public Salesman getSalesman(String[] lineSalesman) {
+    public Salesman createSalesman(String[] lineSalesman) {
         Salesman salesman = Salesman
                 .builder()
                 .cpf(lineSalesman[1])
@@ -41,7 +41,7 @@ public class BuildProcessor {
         return salesman;
     }
 
-    public Sale getSale(String[] lineSale) {
+    public Sale createSale(String[] lineSale) {
         Sale sale = Sale
                 .builder()
                 .id(Long.parseLong(lineSale[1]))
@@ -67,4 +67,12 @@ public class BuildProcessor {
         }
         return saleItemsList;
     }
+
+    public void assignmentSales(List<Sale> salesList, List<Salesman> salesmanList) {
+        salesmanList.forEach(salesman ->
+                salesList.stream()
+                        .filter(sale -> sale.getSalesmanName().equals(salesman.getName()))
+                        .forEach(sale -> salesman.addSale(sale)));
+    }
+
 }
