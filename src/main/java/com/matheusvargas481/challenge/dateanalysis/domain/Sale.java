@@ -14,12 +14,12 @@ import java.util.List;
 
 public class Sale {
     private Long id;
-    private List<SaleItems> saleItemsList;
+    private List<SaleItems> salesItems;
     private String salesmanName;
 
     public static final String TYPE = "003";
 
     public double valueTotal() {
-        return saleItemsList.stream().mapToDouble(itemsSum -> itemsSum.getItemsQuantity() * itemsSum.getItemPrice()).sum();
+        return salesItems.stream().mapToDouble(itemsSum -> itemsSum.getItemsQuantity() * itemsSum.getItemPrice()).sum();
     }
 }

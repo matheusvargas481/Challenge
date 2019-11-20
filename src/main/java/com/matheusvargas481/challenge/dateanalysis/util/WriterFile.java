@@ -32,8 +32,8 @@ public class WriterFile {
             bufferedWriter.write("The most expensive sale: " + challengeService.getExpensiveSale() + "\n");
             bufferedWriter.write("The worst seller: " + challengeService.getWorsSeller() + "\n");
             bufferedWriter.close();
-        } catch (IOException | NoSuchElementException erro) {
-            System.out.printf("Erro:", erro.getMessage());
+        } catch (IOException | NoSuchElementException e) {
+            throw new RuntimeException("Failed to write results !");
         }
     }
 }

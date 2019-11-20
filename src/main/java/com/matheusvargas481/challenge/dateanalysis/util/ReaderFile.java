@@ -12,9 +12,9 @@ import java.util.NoSuchElementException;
 
 @Getter
 public class ReaderFile {
-    private String homeDir = System.getProperty("user.home");
-    private String pathIn = homeDir + "/data/in";
-    private String pathOut = homeDir + "/data/out";
+    private final String HOME_DIR = System.getProperty("user.home");
+    private String pathIn = HOME_DIR + "/data/in";
+    private String pathOut = HOME_DIR + "/data/out";
     private String extension = "dat";
 
     public List<String> read() {
@@ -27,13 +27,12 @@ public class ReaderFile {
                 try {
                     lines.addAll(Files.readAllLines(path));
                 } catch (IOException | NoSuchElementException e) {
-                    e.printStackTrace();
+                    throw new RuntimeException("File empty !");
                 }
             });
         } catch (IOException | NoSuchElementException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Path not found !");
         }
-
         Path dirPathOut = Paths.get(pathOut);
         verifyPath(dirPathOut);
         return lines;
@@ -48,9 +47,8 @@ public class ReaderFile {
                 Files.createDirectories(dirPath);
                 System.out.println("New Directory Successfully Created !");
             } catch (IOException | NoSuchElementException ioExceptionObj) {
-                System.out.println("Problem Occured While Creating The Directory Structure= " + ioExceptionObj.getMessage());
+                throw new RuntimeException("Problem Occured While Creating The Directory Structure= " + ioExceptionObj.getMessage());
             }
-
         }
     }
 }

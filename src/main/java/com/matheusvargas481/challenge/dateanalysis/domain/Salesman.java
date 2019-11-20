@@ -30,5 +30,4 @@ public class Salesman {
     }
 
     public static final String TYPE = "001";
-
 }

@@ -1,62 +1,125 @@
 package com.matheusvargas481.challenge.dateanalysis;
 
+import com.matheusvargas481.challenge.dateanalysis.builder.BuildProcessor;
+import com.matheusvargas481.challenge.dateanalysis.domain.Costumer;
+import com.matheusvargas481.challenge.dateanalysis.domain.Sale;
+import com.matheusvargas481.challenge.dateanalysis.domain.Salesman;
+import com.matheusvargas481.challenge.dateanalysis.service.ChallengeService;
+import com.matheusvargas481.challenge.dateanalysis.util.ParserDat;
 import com.matheusvargas481.challenge.dateanalysis.util.ReaderFile;
-import com.matheusvargas481.challenge.dateanalysis.util.StartSystem;
+import com.matheusvargas481.challenge.dateanalysis.util.WriterFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
+
+import static java.nio.file.StandardWatchEventKinds.*;
 
 
 public class DataAnalysis {
-    private static Map<WatchKey, Path> keyPathMap = new HashMap<>();
-    private static ReaderFile readerFile = new ReaderFile();
-    private static StartSystem startSystem = new StartSystem();
-    private static String homeDir = System.getProperty("user.home");
+    private static ReaderFile readerFile;
+    private static WatchService watcher;
+    private static Map<WatchKey, Path> keys;
 
-    public static void main(String[] args) {
+    private DataAnalysis(Path dir) throws IOException {
+        readerFile = new ReaderFile();
+        watcher = FileSystems.getDefault().newWatchService();
+        keys = new HashMap<>();
+        walkAndRegisterDirectories(dir);
+    }
+
+    public static void main(String[] args) throws IOException {
+        Path dir = Paths.get(readerFile.getPathIn());
+        new DataAnalysis(dir).processEvents();
+    }
+
+    private void registerDirectory(Path dir) throws IOException {
+        WatchKey key = dir.register(watcher, ENTRY_CREATE, ENTRY_DELETE, ENTRY_MODIFY);
+        keys.put(key, dir);
+    }
+
+    private void walkAndRegisterDirectories(final Path start) throws IOException {
         readerFile.read();
-        try (WatchService watchService = FileSystems.getDefault().newWatchService()) {
-            registerDir(Paths.get(homeDir+"/data"), watchService);
-            startListening(watchService);
-        } catch (InterruptedException | NoSuchElementException | IOException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Files.walkFileTree(start, new SimpleFileVisitor<Path>() {
+            @Override
+            public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
+                registerDirectory(dir);
+                return FileVisitResult.CONTINUE;
+            }
+        });
     }
 
-    private static void registerDir(Path path, WatchService watchService) throws IOException {
-        if (!Files.isDirectory(path, LinkOption.NOFOLLOW_LINKS)) {
-            return;
-        }
-        System.out.println("registering: " + path);
-        WatchKey key = path.register(watchService,
-                StandardWatchEventKinds.ENTRY_CREATE,
-                StandardWatchEventKinds.ENTRY_MODIFY,
-                StandardWatchEventKinds.ENTRY_DELETE);
-        keyPathMap.put(key, path);
-        for (File f : path.toFile().listFiles()) {
-            registerDir(f.toPath(), watchService);
-        }
-    }
+    private void processEvents() {
+        for (; ; ) {
+            WatchKey key;
+            try {
+                key = watcher.take();
+                startDataAnalysis();
+            } catch (InterruptedException x) {
+                return;
+            }
 
-    private static void startListening(WatchService watchService) throws InterruptedException {
-        while (true) {
-            WatchKey queuedKey = watchService.take();
-            startSystem.startDataAnalysis();
-            for (WatchEvent<?> watchEvent : queuedKey.pollEvents()) {
-                System.out.printf("kind=%s, count=%d, context=%s Context type=%s%n ",
-                        watchEvent.kind(),
-                        watchEvent.count(), watchEvent.context(),
-                        ((Path) watchEvent.context()).getClass());
-                if (!queuedKey.reset()) {
+            Path dir = keys.get(key);
+            if (dir == null) {
+                System.err.println("WatchKey not recognized!!");
+                continue;
+            }
+
+            for (WatchEvent<?> event : key.pollEvents()) {
+                @SuppressWarnings("rawtypes")
+                WatchEvent.Kind kind = event.kind();
+                @SuppressWarnings("unchecked")
+                Path name = ((WatchEvent<Path>) event).context();
+                Path child = dir.resolve(name);
+                System.out.format("%s: %s\n", event.kind().name(), child);
+                if (kind == ENTRY_CREATE) {
+                    try {
+                        if (Files.isDirectory(child)) {
+                            walkAndRegisterDirectories(child);
+                        }
+                    } catch (IOException x) {
+                        throw new RuntimeException("Process Events failed");
+                    }
+                }
+            }
+            boolean valid = key.reset();
+            if (!valid) {
+                keys.remove(key);
+                if (keys.isEmpty()) {
                     break;
                 }
             }
         }
+    }
+
+
+    public void startDataAnalysis() {
+        ParserDat parserDat = new ParserDat("ç");
+        List<String[]> objects = parserDat.createObjects(readerFile.read());
+
+        BuildProcessor buildProcessor = new BuildProcessor();
+
+        List<Costumer> costumerList = buildProcessor.filterObjects(objects, Costumer.TYPE).stream()
+                .map(buildProcessor::createCostumer)
+                .collect(Collectors.toList());
+
+        List<Salesman> salesmans = buildProcessor.filterObjects(objects, Salesman.TYPE).stream()
+                .map(buildProcessor::createSalesman)
+                .collect(Collectors.toList());
+
+        List<Sale> sales = buildProcessor.filterObjects(objects, Sale.TYPE).stream()
+                .map(buildProcessor::createSale)
+                .collect(Collectors.toList());
+
+        buildProcessor.assignmentSales(sales, salesmans);
+
+        ChallengeService challengeService = new ChallengeService(costumerList, salesmans, sales);
+
+        WriterFile writerFile = new WriterFile(challengeService);
+        writerFile.writerFile();
     }
 }

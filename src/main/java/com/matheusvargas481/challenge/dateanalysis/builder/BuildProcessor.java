@@ -1,6 +1,6 @@
 package com.matheusvargas481.challenge.dateanalysis.builder;
 
-import com.matheusvargas481.challenge.dateanalysis.domain.Client;
+import com.matheusvargas481.challenge.dateanalysis.domain.Costumer;
 import com.matheusvargas481.challenge.dateanalysis.domain.Sale;
 import com.matheusvargas481.challenge.dateanalysis.domain.SaleItems;
 import com.matheusvargas481.challenge.dateanalysis.domain.Salesman;
@@ -22,13 +22,13 @@ public class BuildProcessor {
                 .collect(Collectors.toList());
     }
 
-    public Client createClient(String[] lineClient) {
-        Client client = Client.builder()
+    public Costumer createCostumer(String[] lineClient) {
+        Costumer costumer = Costumer.builder()
                 .cnpj(lineClient[1])
                 .name(lineClient[2])
                 .bussinesArea(lineClient[3])
                 .build();
-        return client;
+        return costumer;
     }
 
     public Salesman createSalesman(String[] lineSalesman) {
@@ -45,27 +45,27 @@ public class BuildProcessor {
         Sale sale = Sale
                 .builder()
                 .id(Long.parseLong(lineSale[1]))
-                .saleItemsList(saleItems(lineSale[2]))
+                .salesItems(saleItems(lineSale[2]))
                 .salesmanName(lineSale[3])
                 .build();
         return sale;
     }
 
     private List<SaleItems> saleItems(String lineSalesItems) {
-        List<SaleItems> saleItemsList = new ArrayList<>();
+        List<SaleItems> salesItems = new ArrayList<>();
         String items = lineSalesItems.replace("[", "").replace("]", "");
-        String[] arrayItemsList = items.split(SEPARETOR_COMMA);
-        for (String item : arrayItemsList) {
+        String[] arrayItems = items.split(SEPARETOR_COMMA);
+        for (String item : arrayItems) {
             String[] arrayItens = item.split(SEPARETOR_HYPHEN);
             SaleItems saleItems = SaleItems
                     .builder()
-                    .idItems(Long.parseLong(arrayItens[0]))
+                    .id(Long.parseLong(arrayItens[0]))
                     .itemsQuantity(Integer.parseInt(arrayItens[1]))
                     .itemPrice(Double.parseDouble(arrayItens[2]))
                     .build();
-            saleItemsList.add(saleItems);
+            salesItems.add(saleItems);
         }
-        return saleItemsList;
+        return salesItems;
     }
 
     public void assignmentSales(List<Sale> salesList, List<Salesman> salesmanList) {

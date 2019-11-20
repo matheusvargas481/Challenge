@@ -11,7 +11,7 @@ import lombok.ToString;
 @ToString
 
 public class SaleItems {
-    private Long idItems;
+    private Long id;
     private int itemsQuantity;
     private double itemPrice;
 }

@@ -10,7 +10,7 @@ import lombok.ToString;
 @Setter
 @ToString
 
-public class Client {
+public class Costumer {
     private String cnpj;
     private String name;
     private String bussinesArea;
