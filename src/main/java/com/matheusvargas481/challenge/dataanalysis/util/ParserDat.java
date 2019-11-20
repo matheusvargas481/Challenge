@@ -1,4 +1,4 @@
-package com.matheusvargas481.challenge.dateanalysis.util;
+package com.matheusvargas481.challenge.dataanalysis.util;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,8 +1,8 @@
-package com.matheusvargas481.challenge.dateanalysis.service;
+package com.matheusvargas481.challenge.dataanalysis.service;
 
-import com.matheusvargas481.challenge.dateanalysis.domain.Costumer;
-import com.matheusvargas481.challenge.dateanalysis.domain.Sale;
-import com.matheusvargas481.challenge.dateanalysis.domain.Salesman;
+import com.matheusvargas481.challenge.dataanalysis.domain.Costumer;
+import com.matheusvargas481.challenge.dataanalysis.domain.Sale;
+import com.matheusvargas481.challenge.dataanalysis.domain.Salesman;
 
 import java.util.Comparator;
 import java.util.List;

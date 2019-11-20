@@ -1,13 +1,13 @@
-package com.matheusvargas481.challenge.dateanalysis;
+package com.matheusvargas481.challenge.dataanalysis;
 
-import com.matheusvargas481.challenge.dateanalysis.builder.BuildProcessor;
-import com.matheusvargas481.challenge.dateanalysis.domain.Costumer;
-import com.matheusvargas481.challenge.dateanalysis.domain.Sale;
-import com.matheusvargas481.challenge.dateanalysis.domain.Salesman;
-import com.matheusvargas481.challenge.dateanalysis.service.ChallengeService;
-import com.matheusvargas481.challenge.dateanalysis.util.ParserDat;
-import com.matheusvargas481.challenge.dateanalysis.util.ReaderFile;
-import com.matheusvargas481.challenge.dateanalysis.util.WriterFile;
+import com.matheusvargas481.challenge.dataanalysis.builder.BuildProcessor;
+import com.matheusvargas481.challenge.dataanalysis.service.ChallengeService;
+import com.matheusvargas481.challenge.dataanalysis.domain.Costumer;
+import com.matheusvargas481.challenge.dataanalysis.domain.Sale;
+import com.matheusvargas481.challenge.dataanalysis.domain.Salesman;
+import com.matheusvargas481.challenge.dataanalysis.util.ParserDat;
+import com.matheusvargas481.challenge.dataanalysis.util.ReaderFile;
+import com.matheusvargas481.challenge.dataanalysis.util.WriterFile;
 
 import java.io.IOException;
 import java.nio.file.*;
@@ -21,12 +21,11 @@ import static java.nio.file.StandardWatchEventKinds.*;
 
 
 public class DataAnalysis {
-    private static ReaderFile readerFile;
+    private static ReaderFile readerFile = new ReaderFile();
     private static WatchService watcher;
     private static Map<WatchKey, Path> keys;
 
     private DataAnalysis(Path dir) throws IOException {
-        readerFile = new ReaderFile();
         watcher = FileSystems.getDefault().newWatchService();
         keys = new HashMap<>();
         walkAndRegisterDirectories(dir);

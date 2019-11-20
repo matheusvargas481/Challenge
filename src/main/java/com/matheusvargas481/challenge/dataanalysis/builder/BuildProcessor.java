@@ -1,9 +1,9 @@
-package com.matheusvargas481.challenge.dateanalysis.builder;
+package com.matheusvargas481.challenge.dataanalysis.builder;
 
-import com.matheusvargas481.challenge.dateanalysis.domain.Costumer;
-import com.matheusvargas481.challenge.dateanalysis.domain.Sale;
-import com.matheusvargas481.challenge.dateanalysis.domain.SaleItems;
-import com.matheusvargas481.challenge.dateanalysis.domain.Salesman;
+import com.matheusvargas481.challenge.dataanalysis.domain.Costumer;
+import com.matheusvargas481.challenge.dataanalysis.domain.Sale;
+import com.matheusvargas481.challenge.dataanalysis.domain.SaleItems;
+import com.matheusvargas481.challenge.dataanalysis.domain.Salesman;
 import lombok.Getter;
 
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.matheusvargas481.challenge.dateanalysis.domain;
+package com.matheusvargas481.challenge.dataanalysis.domain;
 
 import lombok.Builder;
 import lombok.Getter;

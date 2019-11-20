@@ -1,6 +1,6 @@
-package com.matheusvargas481.challenge.dateanalysis.util;
+package com.matheusvargas481.challenge.dataanalysis.util;
 
-import com.matheusvargas481.challenge.dateanalysis.service.ChallengeService;
+import com.matheusvargas481.challenge.dataanalysis.service.ChallengeService;
 
 import java.io.BufferedWriter;
 import java.io.File;
