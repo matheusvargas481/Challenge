@@ -21,6 +21,7 @@ import static java.nio.file.StandardWatchEventKinds.*;
 
 
 public class DataAnalysis {
+    private static final String SEPARETOR = "ç";
     private static ReaderFile readerFile = new ReaderFile();
     private static WatchService watcher;
     private static Map<WatchKey, Path> keys;
@@ -97,12 +98,12 @@ public class DataAnalysis {
 
 
     public void startDataAnalysis() {
-        ParserDat parserDat = new ParserDat("ç");
+        ParserDat parserDat = new ParserDat(SEPARETOR);
         List<String[]> objects = parserDat.createObjects(readerFile.read());
 
         BuildProcessor buildProcessor = new BuildProcessor();
 
-        List<Costumer> costumerList = buildProcessor.filterObjects(objects, Costumer.TYPE).stream()
+        List<Costumer> costumers = buildProcessor.filterObjects(objects, Costumer.TYPE).stream()
                 .map(buildProcessor::createCostumer)
                 .collect(Collectors.toList());
 
@@ -116,7 +117,7 @@ public class DataAnalysis {
 
         buildProcessor.assignmentSales(sales, salesmans);
 
-        ChallengeService challengeService = new ChallengeService(costumerList, salesmans, sales);
+        ChallengeService challengeService = new ChallengeService(costumers, salesmans, sales);
 
         WriterFile writerFile = new WriterFile(challengeService);
         writerFile.writerFile();

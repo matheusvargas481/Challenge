@@ -30,7 +30,7 @@ public class WriterFile {
             bufferedWriter.write("Total Number of Input Clients: " + challengeService.getAmountClient() + "\n");
             bufferedWriter.write("Total number of input sellers: " + challengeService.getAmountSeller() + "\n");
             bufferedWriter.write("The most expensive sale: " + challengeService.getExpensiveSale() + "\n");
-            bufferedWriter.write("The worst seller: " + challengeService.getWorsSeller() + "\n");
+            bufferedWriter.write("The worst seller: " + challengeService.getWorstSeller() + "\n");
             bufferedWriter.close();
         } catch (IOException | NoSuchElementException e) {
             throw new RuntimeException("Failed to write results !");

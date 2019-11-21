@@ -28,5 +28,5 @@ public class ChallengeService {
 
     public Long getExpensiveSale() { return sales.stream().max(Comparator.comparing(Sale::valueTotal)).map(Sale::getId).get(); }
 
-    public String getWorsSeller() { return salesmans.stream().min(Comparator.comparing(Salesman::getValueTotalSale)).map(Salesman::getName).get(); }
+    public String getWorstSeller() { return salesmans.stream().min(Comparator.comparing(Salesman::getValueTotalSale)).map(Salesman::getName).get(); }
 }
