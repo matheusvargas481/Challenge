@@ -39,14 +39,14 @@ NOTE: The options must be written in lowercase.
 - build: to generate the app build
 - run: to run the application
 
-Ready, just follow the logs by the terminal!
-
-To stop the application use the command in the Ctrl + C terminal.
-
 ## How to use the app
 
 1. Insert your files in the format of the files found in the ~/Challenge/FileTestSystem. Folder within the folder created by the ~/data/in application
 2. Track results in file created in ~/out folder
+
+Ready, just follow the logs by the terminal!
+
+To stop the application use the command in the Ctrl + C terminal.
 
 ## Author
 
